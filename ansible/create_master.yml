@@ -1,0 +1,13 @@
+---
+#./ansible-playbook_wrapper create_master.yml -K
+- hosts: rancher-master
+  tags: wait
+  gather_facts: no
+  tasks:
+  - name: Wait for SSH
+local_action: wait_for port=22 host={% if ansible_ssh_host is defined %}{{ ansible_ssh_host }}{% else %}{{ inventory_hostname }}{% endif %}
+
+  roles:
+  - {role: AdopteUnOps.mysql-docker, tags: mysql}
+  - {role: AdopteUnOps.rancher-install-master, tags: rancher-master}
+  - {role: AdopteUnOps.rancher-configure-catalog, tags: catalogs}
