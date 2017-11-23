@@ -33,45 +33,43 @@ resource "aws_instance" "rancher_host_dev" {
     }
 
 }
+resource "aws_security_group" "rancher_host" {
+    name        = "${var.name_prefix}-host"
+    description = "Rancher HA Host Ports"
+    vpc_id      = "${aws_vpc.rancher_ha.id}"
 
-#resource "aws_security_group" "rancher_host" {
-#    name        = "${var.name_prefix}-host"
-#    description = "Rancher HA Host Ports"
-#    vpc_id      = "${aws_vpc.rancher_ha.id}"
-#
-#    ingress {
-#        from_port = 0
-#        to_port   = 65535
-#        protocol  = "tcp"
-#        self      = true
-#    }
-#
-#    ingress {
-#        from_port = 0
-#        to_port   = 65535
-#        protocol  = "udp"
-#        self      = true
-#    }
-#
-#    ingress {
-#        from_port   = 8080
-#        to_port     = 8080
-#        protocol    = "tcp"
-#        cidr_blocks = ["${var.vpc_cidr}"]
-#    }
-#
-#    ingress {
-#        from_port   = 9345
-#        to_port     = 9345
-#        protocol    = "tcp"
-#        cidr_blocks = ["${var.vpc_cidr}"]
-#    }
-#
-#    egress {
-#        from_port   = 0
-#        to_port     = 0
-#        protocol    = "-1"
-#        cidr_blocks = ["0.0.0.0/0"]
-#    }
-#}
+    ingress {
+        from_port = 0
+        to_port   = 65535
+        protocol  = "tcp"
+        self      = true
+    }
 
+    ingress {
+        from_port = 0
+        to_port   = 65535
+        protocol  = "udp"
+        self      = true
+    }
+
+    ingress {
+        from_port   = 8080
+        to_port     = 8080
+        protocol    = "tcp"
+        cidr_blocks = ["${var.vpc_cidr}"]
+    }
+
+    ingress {
+        from_port   = 9345
+        to_port     = 9345
+        protocol    = "tcp"
+        cidr_blocks = ["${var.vpc_cidr}"]
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+}
